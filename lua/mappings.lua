@@ -43,5 +43,6 @@ map("n", "K", function()
 end, { desc = "Peek fold or LSP hover" })
 
 map("n", "<leader>gg", "<cmd>LazyGit<cr>", { desc = "Open lazy git" })
+map("n", "<leader>dd", "<cmd>Nvdash<cr>", { desc = "Open Nvdash" })
 
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

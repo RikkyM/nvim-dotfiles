@@ -45,6 +45,8 @@ M.nvdash = {
     "",
     "vscode killers, and jetbrains slayer",
     "",
+    "~ Kafkaesque",
+    "",
   },
 
   buttons = {
@@ -52,6 +54,18 @@ M.nvdash = {
     { txt = " Recent Files", keys = "fo", cmd = "Telescope oldfiles" },
     { txt = " Find Word", keys = "fw", cmd = "Telescope live_grep" },
     { txt = " LazyGit", keys = "gg", cmd = "LazyGit" },
+    { txt = "─", hl = "NvDashFooter", no_gap = true, rep = true },
+    {
+      txt = function()
+        local stats = require("lazy").stats()
+        local ms = math.floor(stats.startuptime) .. " ms"
+        return "  Loaded " .. stats.loaded .. "/" .. stats.count .. " plugins in " .. ms
+      end,
+      hl = "NvDashFooter",
+      no_gap = true,
+      content = "fit",
+    },
+    { txt = "─", hl = "NvDashFooter", no_gap = true, rep = true },
   },
 }
 
