@@ -39,7 +39,15 @@ M.ui = {
   },
 }
 
--- M.nvdash = { load_on_startup = true }
+M.nvdash = {
+  load_on_startup = true,
+  header = {
+    "",
+    "vscode killers, and jetbrains slayer",
+    "",
+  },
+}
+
 -- M.ui = {
 --       tabufline = {
 --          lazyload = false

@@ -119,32 +119,73 @@ return {
     "kevinhwang91/promise-async",
   },
 
-  -- Konfigurasi nvim-ufo
   {
     "kevinhwang91/nvim-ufo",
     dependencies = "kevinhwang91/promise-async",
-    event = "BufReadPost", -- Muat plugin setelah membaca buffer
+    event = "BufReadPost",
     opts = {
       provider_selector = function(bufnr, filetype, buftype)
-        return { "treesitter", "indent" } -- Menggunakan LSP atau indentasi sebagai penyedia lipatan
+        return { "treesitter", "indent" }
+      end,
+      fold_virt_text_handler = function(virtText, lnum, endLnum, width, truncate)
+        local newVirtText = {}
+        -- ambil baris terakhir yang di-fold (closing tag), rapikan spasi di depannya
+        local endText = vim.trim(vim.api.nvim_buf_get_lines(0, endLnum - 1, endLnum, false)[1] or "")
+        local suffix = ("  ⋯ %s"):format(endText)
+        local curWidth = 0
+        for _, chunk in ipairs(virtText) do
+          local chunkText, hlGroup = chunk[1], chunk[2]
+          local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+          if curWidth + chunkWidth < width then
+            table.insert(newVirtText, chunk)
+          else
+            chunkText = truncate(chunkText, width - curWidth)
+            table.insert(newVirtText, { chunkText, hlGroup })
+            break
+          end
+          curWidth = curWidth + chunkWidth
+        end
+        table.insert(newVirtText, { suffix, "MoreMsg" })
+        return newVirtText
       end,
     },
     init = function()
-      -- Pengaturan Neovim yang dibutuhkan nvim-ufo
-      vim.o.foldcolumn = "1" -- Menampilkan kolom lipatan di sebelah kiri
-      vim.o.foldlevel = 99 -- Membuka semua lipatan secara default
+      vim.o.foldcolumn = "1"
+      vim.o.foldlevel = 99
       vim.o.foldlevelstart = 99
       vim.o.foldenable = true
     end,
     config = function(_, opts)
-      -- require("ufo").setup(opts)
-      require("ufo").setup {
-        provider_selector = function(bufnr, filetype, buftype)
-          return { "lsp", "indent" }
-        end,
-      }
+      require("ufo").setup(opts)
     end,
   },
+
+  -- Konfigurasi nvim-ufo
+  -- {
+  --   "kevinhwang91/nvim-ufo",
+  --   dependencies = "kevinhwang91/promise-async",
+  --   event = "BufReadPost", -- Muat plugin setelah membaca buffer
+  --   opts = {
+  --     provider_selector = function(bufnr, filetype, buftype)
+  --       return { "treesitter", "indent" } -- Menggunakan LSP atau indentasi sebagai penyedia lipatan
+  --     end,
+  --   },
+  --   init = function()
+  --     -- Pengaturan Neovim yang dibutuhkan nvim-ufo
+  --     vim.o.foldcolumn = "1" -- Menampilkan kolom lipatan di sebelah kiri
+  --     vim.o.foldlevel = 99 -- Membuka semua lipatan secara default
+  --     vim.o.foldlevelstart = 99
+  --     vim.o.foldenable = true
+  --   end,
+  --   config = function(_, opts)
+  --     -- require("ufo").setup(opts)
+  --     require("ufo").setup {
+  --       provider_selector = function(bufnr, filetype, buftype)
+  --         return { "lsp", "indent" }
+  --       end,
+  --     }
+  --   end,
+  -- },
 
   {
     "lukas-reineke/indent-blankline.nvim",
@@ -210,9 +251,9 @@ return {
     "windwp/nvim-autopairs",
     event = "InsertEnter",
     config = true,
-    -- use opts = {} for passing setup options
-    -- this is equivalent to setup({}) function
   },
+
+  { "dmmulroy/ts-error-translator.nvim" },
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
