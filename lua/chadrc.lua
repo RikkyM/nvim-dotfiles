@@ -46,6 +46,13 @@ M.nvdash = {
     "vscode killers, and jetbrains slayer",
     "",
   },
+
+  buttons = {
+    { txt = " Find File", keys = "ff", cmd = "Telescope find_files" },
+    { txt = " Recent Files", keys = "fo", cmd = "Telescope oldfiles" },
+    { txt = " Find Word", keys = "fw", cmd = "Telescope live_grep" },
+    { txt = " LazyGit", keys = "gg", cmd = "LazyGit" },
+  },
 }
 
 -- M.ui = {
