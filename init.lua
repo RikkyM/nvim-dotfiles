@@ -1,6 +1,7 @@
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.opt.shell = "zsh"
+-- vim.opt.shell = "C:/Program Files/Git/bin/bash.exe"
 
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
@@ -13,6 +14,8 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 local lazy_config = require "configs.lazy"
+
+vim.opt.backupcopy = "yes"
 
 -- load plugins
 require("lazy").setup({

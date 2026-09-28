@@ -160,33 +160,6 @@ return {
     end,
   },
 
-  -- Konfigurasi nvim-ufo
-  -- {
-  --   "kevinhwang91/nvim-ufo",
-  --   dependencies = "kevinhwang91/promise-async",
-  --   event = "BufReadPost", -- Muat plugin setelah membaca buffer
-  --   opts = {
-  --     provider_selector = function(bufnr, filetype, buftype)
-  --       return { "treesitter", "indent" } -- Menggunakan LSP atau indentasi sebagai penyedia lipatan
-  --     end,
-  --   },
-  --   init = function()
-  --     -- Pengaturan Neovim yang dibutuhkan nvim-ufo
-  --     vim.o.foldcolumn = "1" -- Menampilkan kolom lipatan di sebelah kiri
-  --     vim.o.foldlevel = 99 -- Membuka semua lipatan secara default
-  --     vim.o.foldlevelstart = 99
-  --     vim.o.foldenable = true
-  --   end,
-  --   config = function(_, opts)
-  --     -- require("ufo").setup(opts)
-  --     require("ufo").setup {
-  --       provider_selector = function(bufnr, filetype, buftype)
-  --         return { "lsp", "indent" }
-  --       end,
-  --     }
-  --   end,
-  -- },
-
   {
     "lukas-reineke/indent-blankline.nvim",
     main = "ibl",
@@ -228,17 +201,27 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    opts = {
+      ensure_installed = {
+        "tsx",
+        "typescript",
+        "javascript",
+        "jsx",
+      },
+    },
   },
 
   {
     "windwp/nvim-ts-autotag",
     ft = {
       "html",
-      "xml",
       "javascript",
       "typescript",
       "javascriptreact",
       "typescriptreact",
+      "tsx",
+      "jsx",
+      "xml",
       "svelte",
       "vue",
     },
@@ -259,33 +242,61 @@ return {
     "kdheepak/lazygit.nvim",
     lazy = true,
     cmd = {
-        "LazyGit",
-        "LazyGitConfig",
-        "LazyGitCurrentFile",
-        "LazyGitFilter",
-        "LazyGitFilterCurrentFile",
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
     },
     -- optional for floating window border decoration
     dependencies = {
-        "nvim-lua/plenary.nvim",
+      "nvim-lua/plenary.nvim",
     },
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-        { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" }
-    }
-}
+      { "<leader>lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+    },
+  },
+
+  {
+    {
+      "numToStr/Comment.nvim",
+      dependencies = {
+        "JoosepAlviste/nvim-ts-context-commentstring",
+      },
+      opts = function()
+        require("ts_context_commentstring").setup {
+          enable_autocmd = false,
+        }
+
+        return {
+          pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
+        }
+      end,
+    },
+  },
 
   -- test new blink
   -- { import = "nvchad.blink.lazyspec" },
 
   -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
+  --   "nvim-treesitter/nvim-treesitter",
+  --   opts = {
+  --     ensure_installed = {
+  --       "tsx",
+  --       "typescript",
+  --       "typescriptreact",
+  --       "jsx",
+  --       "javascript",
+  --       "javascriptreact",
+  --       -- "vim",
+  --       --
+  --       -- "lua",
+  --       -- "vimdoc",
+  --       -- "html",
+  --       -- "css",
+  --     },
+  --   },
   -- },
 }
