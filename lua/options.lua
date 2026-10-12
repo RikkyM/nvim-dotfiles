@@ -11,7 +11,7 @@ end
 -- vim.opt.backup = false
 -- vim.opt.writebackup = false
 -- vim.opt.swapfile = false
--- vim.opt.backupcopy = "yes"
+vim.opt.backupcopy = "yes"
 -- vim.opt.autoread = false
 
 vim.lsp.inlay_hint.enable(true, bufnr)
