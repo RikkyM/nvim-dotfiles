@@ -6,10 +6,7 @@ local servers = {
   "ts_ls",
   "emmet_language_server",
   "docker_language_server",
-  -- "laravel_lsp",
-  -- "laravel-ls",
   "intelephense",
-  -- "phpactor",
   "eslint",
   "tailwindcss",
   "jsonls",
@@ -26,6 +23,12 @@ vim.lsp.config("intelephense", {
         undefinedMethods = false,
       },
     },
+  },
+})
+
+vim.lsp.config("cssls", {
+  settings = {
+    css = { lint = { unknownAtRules = "ignore" } },
   },
 })
 
